@@ -1,1 +1,1 @@
-# Ecommerce Application Using Python-Django
+# E-Commerce Application Using Python-Django

@@ -1,1 +1,20 @@
-<h3>Store</h3>
+
+<!--To add Nav Bar from main.html we use extend-->
+{% extends 'store/main.html' %}
+<!--Now refer to  line 12-->
+
+<!--Loading static directory for css and images-->
+{% load static %}
+
+<!--loading css from static's css directory - main.css for styling -->
+<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+<!--We extended Navbar from main.html in 1st line-->
+<!--Now we'll set where the context is gonna save -->
+
+{% block content %}
+    <h3>Store</h3>
+{% endblock content %}
+
+<!--Adding images to our page-->
+<!--<img src="{% static 'images/cart.png' %}">-->

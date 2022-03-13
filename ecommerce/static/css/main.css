@@ -9,7 +9,15 @@ body{
 
 
 body{
-	background-color: hsl(0, 0%, 98%);
+	background-color: hsl(0, 0%, 98%);*/
+}
+
+#nav-cart{
+
+}
+
+#nb{
+    background-image: repeating-radial-gradient(steelblue, black);
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -39,21 +47,30 @@ h1,h2,h3,h4,h5,h6{
 	background-color: #4f868c!important;
 }
 
+
+#login-icon{
+	width:25px;
+	display: inline-block;
+	margin-left: 0px;
+}
+
 #cart-icon{
 	width:25px;
 	display: inline-block;
-	margin-left: 15px;
+	margin-left: 0px;
 }
 
 #cart-total{
 	display: inline;
 	text-align: center;
+	padding:5px 10px 5px 10px;
 	color:#fff;
 	background-color: red;
-	width: 20px;
-	height: 25px;
-	border-radius: 50%;
-	font-size: 14px;
+	width: 1em;
+	height: 70px;
+	border-radius: 7%;
+	font-size: 18px;
+	margin-left:3px;
 }
 
 .col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{

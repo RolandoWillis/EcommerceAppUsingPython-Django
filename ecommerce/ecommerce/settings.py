@@ -125,4 +125,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static') # telling it to refer to basedirectory and look for the folder called static
 ]
 
+# This will add the images in static/ images directory
+
+MEDIA_URL = '/images/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

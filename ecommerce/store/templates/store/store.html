@@ -16,44 +16,54 @@
 <!--Setting Layout for Product Cards-->
 
 <div class="row">
+    <!-- Creating for Loop to add Products added by admin and render them on site instead of dummy products -->
+
+    {% for product in products %} <!-- product = i, products = var from views -->
     <div class="col-lg-4">
-        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
+<!--        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">-->
+                <img class="thumbnail" src="{{product.imageURL}}">
+
         <div class="box-element product">
-            <h6><strong>Product</strong></h6>
+            <h6><strong>{{product.name}}</strong></h6>
             <hr>
             <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
             <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float:right;">PKR 20.</h4>
+            <h4 style="display: inline-block; float:right;">PKR {{product.price|floatformat:2}}</h4>
         </div>
     </div>
-
-    <div class="col-lg-4">
-        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
-        <div class="box-element product">
-            <h6><strong>Product</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float:right;">PKR 20.</h4>
-        </div>
-    </div>
-
-    <div class="col-lg-4">
-        <!--Add Image in the Card-->
-        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">
-        <!--Box of a product-->
-        <div class="box-element product">
-            <h6><strong>Product</strong></h6>
-            <hr>
-            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>
-            <a href="#" class="btn btn-outline-success">View</a>
-            <h4 style="display: inline-block; float:right;">PKR 20.</h4>
-        </div>
-    </div>
-
+    {% endfor %}
 </div>
 
 {% endblock content %}
 
 <!--Adding images to our page-->
 <!--<img src="{% static 'images/cart.png' %}">-->
+
+
+<!-- Docs -->
+
+<!--    This was for DUMMY Products      -->
+<!--    <div class="col-lg-4">-->
+<!--        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">-->
+<!--        <div class="box-element product">-->
+<!--            <h6><strong>Product</strong></h6>-->
+<!--            <hr>-->
+<!--            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>-->
+<!--            <a href="#" class="btn btn-outline-success">View</a>-->
+<!--            <h4 style="display: inline-block; float:right;">PKR 20.</h4>-->
+<!--        </div>-->
+<!--    </div>-->
+
+<!--    <div class="col-lg-4">-->
+<!--        &lt;!&ndash;Add Image in the Card&ndash;&gt;-->
+<!--        <img class="thumbnail" src="{% static 'images/placeholder.png' %}">-->
+<!--        &lt;!&ndash;Box of a product&ndash;&gt;-->
+<!--        <div class="box-element product">-->
+<!--            <h6><strong>Product</strong></h6>-->
+<!--            <hr>-->
+<!--            <button class="btn btn-outline-secondary add-btn">Add to Cart</button>-->
+<!--            <a href="#" class="btn btn-outline-success">View</a>-->
+<!--            <h4 style="display: inline-block; float:right;">PKR 20.</h4>-->
+<!--        </div>-->
+<!--    </div>-->
+

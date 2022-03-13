@@ -16,7 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Imported for images MediaURL
+from django.conf.urls.static import static
+from django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('store.urls')) # pointing it to app's url
 ]
+
+# for images
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# We can now view/dynamically access images using the following url pattern
+# http://127.0.0.1:8000/images/shoes.jpg

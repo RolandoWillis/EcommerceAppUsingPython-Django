@@ -14,6 +14,11 @@
 
     <!-- For Better View -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1"/>
+
+    <script type="text/javascript">
+        var user = '{{request.user}}'
+    </script>
+
     <!-- Importing CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
@@ -67,9 +72,6 @@
     {% endblock content %}
 
 </div>
-
-
-
 
 <!--   JS of Bootstrap should be at end right above closing body tag     -->
 <!-- JavaScript Bundle with Popper -->

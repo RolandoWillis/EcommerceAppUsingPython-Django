@@ -13,9 +13,31 @@ for(var i = 0; i < updateButtons.length; i++){
         console.log('USER:', user)
 
         if(user === 'AnonymousUser'){
-            console.log('Not Logged In')}
+            window.alert('User is Not Authenticated. Please Login to Proceed!')}
         else{
-            console.log('User is Logged In. Sending Data ....')
+            // console.log('User is Logged In. Sending Data ....')
+            updateUserOrder(productId, action)
         }
     })
+}
+
+function updateUserOrder(productId, action){
+   // console.log('User is Authenticated. Sending Data ...')
+   window.alert('User is Authenticated. Sending Data ...')
+   var url = '/update_item/'
+
+   fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({'productId': productId, 'action': action })
+   })
+
+   .then((response) => {
+       return response.json()
+   })
+   .then((data) => {
+       console.log('Data:', data)
+   })
 }

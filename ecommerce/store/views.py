@@ -17,6 +17,7 @@ def store(request):
         order, created = Order.objects.get_or_create(customer, complete=False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
         items = order.orderitem_set.all() # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
         cartItems = order.get_cart_items
+
     else:
         # if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
         items = []
@@ -39,12 +40,16 @@ def cart(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer, complete=False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
         items = order.orderitem_set.all() # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
+        cartItems = order.get_cart_items
+
     else:
         # if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
         items = []
         order = {'get_cart_total': 0,'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
-    context = {'items': items, 'order': order}
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/cart.html', context)
 
 
@@ -54,12 +59,16 @@ def checkout(request):
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer, complete=False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
         items = order.orderitem_set.all() # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
+        cartItems = order.get_cart_items
+
     else:
         # if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
         items = []
         order = {'get_cart_total': 0,'get_cart_items': 0}
+        cartItems = order['get_cart_items']
 
-    context = {'items': items, 'order': order}
+
+    context = {'items': items, 'order': order, 'cartItems': cartItems}
     return render(request, 'store/checkout.html', context)
 
 

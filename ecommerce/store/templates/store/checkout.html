@@ -28,11 +28,11 @@
                     <div class="form-field">
                         <input required class="form-control" type="email" name="email" placeholder="Email..">
                     </div>
+                    <br>
                 </div>
 
                 <div id="shipping-info">
                     <hr>
-
                     <p>Shipping Information:</p>
                     <hr>
                     <div class="form-field">
@@ -60,10 +60,6 @@
 
     <br> <br>
 
-    <div class="box-element hidden" id="payment-info">
-        <small> PayPal Options </small>
-    </div>
-
     <div class="col-lg-6">
         <div class="box-element">
 
@@ -85,14 +81,33 @@
 
         </div>
     </div>
+
+    <div style="margin-left:10px; margin-top:15px; margin-bottom:30px; width:98.5%;" class="box-element"
+         id="payment-info">
+        <small> PayPal Options </small>
+    </div>
+
 </div>
 
+<!--Hiding Shipping Form Info if Item is Digital-->
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
 
     if(shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = ''
     }
+
+    var form = document.getElementById('form')
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('Form Submitted...')
+        document.getElementById('form-button').classList.add('hidden')
+        document.getElementById('payment-info').classList.remove('hidden')
+    })
+
+
+
 </script>
 
 {% endblock content %}

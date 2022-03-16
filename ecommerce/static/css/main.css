@@ -61,14 +61,17 @@ h1,h2,h3,h4,h5,h6{
 }
 
 #cart-total{
-    display: block;
+    display: inline;
 	text-align: center;
 	color:#fff;
 	background-color: red;
-	width: 20px;
-	height: 25px;
+	width: 50px;
+	height: 55px;
 	border-radius: 50%;
-	font-size: 14px;
+	font-size: 16px;
+
+	padding:3px 7px 3px 7px;
+	text-align:center;
 }
 
 .col-lg-4, .col-lg-6, .col-lg-8, .col-lg-12{

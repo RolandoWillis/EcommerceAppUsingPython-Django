@@ -59,7 +59,7 @@
 
         <br> <br>
 
-        <div style="margin-left:10px; margin-top:30px; width:48%;" class="box-element hidden"
+        <div class="box-element hidden"
              id="payment-info">
             <small> PayPal Options </small>
             <button id="make-payment"> Make Payment</button>
@@ -94,7 +94,7 @@
 
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
-    var total = '{{order.get_cart_total|floatformat:2}}'
+    var total = '{{order.get_cart_total}}'
     
     <!--Hiding Form Options-->
 

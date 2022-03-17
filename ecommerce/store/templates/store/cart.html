@@ -34,8 +34,9 @@
                     </th>
 
                     <th>
-                        <a style="float:right" ; margin:5px; class="btn btn-success" href="{% url 'checkout' %}">Total:
-                            PKR.
+
+                        <a style="float:right" ; margin:5px; class="btn btn-success" href="{% url 'checkout' %}">Checkout
+                            | Pkr.
                             <strong> {{order.get_cart_total|floatformat:2}} </strong></a>
                     </th>
                 </tr>

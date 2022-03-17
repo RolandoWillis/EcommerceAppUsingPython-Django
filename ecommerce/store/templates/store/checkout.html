@@ -1,4 +1,4 @@
-<!--To add Nav Bar from main.html we use extend-->
+`<!--To add Nav Bar from main.html we use extend-->
 {% extends 'store/main.html' %}
 <!--Now refer to  line 12-->
 
@@ -82,9 +82,10 @@
         </div>
     </div>
 
-    <div style="margin-left:10px; margin-top:15px; margin-bottom:30px; width:98.5%;" class="box-element"
+    <div style="margin-left:10px; margin-top:15px; margin-bottom:30px; width:98.5%;" class="box-element hidden"
          id="payment-info">
         <small> PayPal Options </small>
+        <button id="make-payment"> Make Payment</button>
     </div>
 
 </div>
@@ -92,6 +93,8 @@
 <!--Hiding Shipping Form Info if Item is Digital-->
 <script type="text/javascript">
     var shipping = '{{order.shipping}}'
+    
+    <!--Enabling Payment Option-->
 
     if(shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = ''
@@ -108,6 +111,15 @@
 
 
 
+    document.getElementById('make-payment').addEventListener('click', function(e){
+        submitFormData()
+    })
+
+    function submitFormData(){
+        <!--Checking the Make Payment Button-->
+        console.log('Payment Button Clicked')
+    }
+
 </script>
 
-{% endblock content %}
+{% endblock content %}`

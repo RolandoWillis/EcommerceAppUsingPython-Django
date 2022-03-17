@@ -1,4 +1,4 @@
-`<!--To add Nav Bar from main.html we use extend-->
+<!--To add Nav Bar from main.html we use extend-->
 {% extends 'store/main.html' %}
 <!--Now refer to  line 12-->
 
@@ -19,6 +19,13 @@
     <div class="col-lg-6">
         <div class="box-element" id="form-wrapper">
             <form id="form">
+
+                <!--Secure way to solve 403:forbidden for a new incognito user-->
+                <!--This csrf-token in basically a hidden input field which generates a token for the form-->
+                <!--Go below to js @ var form-->
+
+                {% csrf_token %}
+
                 <div id="user-info">
                     <hr>
                     <p>User Information:</p>
@@ -55,7 +62,6 @@
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
             </form>
         </div>
-
 
         <br> <br>
 
@@ -114,6 +120,9 @@
     }
 
     var form = document.getElementById('form')
+    <!-- As mentioned, csrf was an inp field at the top, therefore its @ index 0 (first input) so we access it here by index-->
+    csrftoken = form.getElementsByTagName("input")[0].value
+    console.log("New Token:", csrftoken = form.getElementsByTagName("input")[0].value)
 
     form.addEventListener('submit', function(e){
         e.preventDefault()
@@ -178,6 +187,7 @@
             window.location.href = "{% url 'store' %}"
         })
 }
+
 </script>
 
-{% endblock content %}`
+{% endblock content %}

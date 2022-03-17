@@ -9,12 +9,9 @@ import datetime
 def store(request):
 	# After Models, migration, admin and added values by admin
 	
-	products = Product.objects.all()
-	
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
+		order, created = Order.objects.get_or_create(customer=customer, complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
 		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
 		cartItems = order.get_cart_items
 	
@@ -25,21 +22,19 @@ def store(request):
 		cartItems = order['get_cart_items']
 	
 	# Previously
+	
+	products = Product.objects.all()
 	context = {
 		'products': products,
 		'cartItems': cartItems}  # creating context dictionary to pass objects to template, PS: dict updated, empty previously
-	return render(request, 'store/store.html',
-	              context)  # dirInTemplate/relevantHtmlFile | context to see that data in there
-	# Previously
+	return render(request, 'store/store.html', context)  # dirInTemplate/relevantHtmlFile | context to see that data in there
 
 # After updating views, go to template store.html
-
 
 def cart(request):
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
+		order, created = Order.objects.get_or_create(customer = customer, complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
 		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
 		cartItems = order.get_cart_items
 	
@@ -55,8 +50,7 @@ def cart(request):
 def checkout(request):
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
+		order, created = Order.objects.get_or_create(customer = customer, complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
 		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
 		cartItems = order.get_cart_items
 	
@@ -82,7 +76,6 @@ def updateItem(request):
 	# we dont wanna create it again, we just wanna update the quantity of it
 	
 	order, created = Order.objects.get_or_create(customer = customer, complete = False)
-	
 	orderItem, created = OrderItem.objects.get_or_create(order = order, product = product)
 	
 	if action == 'add':
@@ -97,6 +90,15 @@ def updateItem(request):
 	
 	return JsonResponse('Item was added', safe = False)
 
+# When a new user logs in("incognito"), he gets a forbidden:403 error as it doesn't build session for some reason
+# To cater this, we have a quick fix here in which we use csrf_exempt which is builtin decorator
+# csrf_exempt: whenever POST data gets sent to the checkout view, we don't need a csrf token
+
+# from django.views.decorators.csrf import csrf_exempt
+# @csrf_exempt
+
+# This was 1 way for data with no security issues
+# The secure way is that we add a csrf token in form in checkout.html
 def processOrder(request):
 	# print('Data:', request.body)
 	transaction_id = datetime.datetime.now().timestamp()
@@ -127,3 +129,4 @@ def processOrder(request):
 		print("User is not Logged In")
 	
 	return JsonResponse('Payment Successful', safe = False)
+

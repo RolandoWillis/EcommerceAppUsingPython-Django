@@ -6,8 +6,7 @@ from django.contrib.auth.models import User
 # Building Customer Model
 
 class Customer(models.Model):
-	user = models.OneToOneField(User, on_delete = models.CASCADE, null = True,
-	                            blank = True)  # models.CASCADE will del the entire item
+	user = models.OneToOneField(User, on_delete = models.CASCADE, null = True,  blank = True)  # models.CASCADE will del the entire item
 	name = models.CharField(max_length = 200, null = True)
 	email = models.EmailField(max_length = 200, null = True)
 	

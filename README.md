@@ -5,3 +5,4 @@ This is an Ecommerce website made on Django and is divided into 5 steps :
 - Adding data structures.
 - Adding Site Functionality
 - Implementing Guest Checkout
+- Payment Integration

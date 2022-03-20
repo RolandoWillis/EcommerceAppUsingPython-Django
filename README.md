@@ -8,3 +8,4 @@ This is an Ecommerce website made on Django and is divided into the following 5 
 - Payment Integration
 
 It is based on the following Database models:
+

@@ -6,3 +6,5 @@ This is an Ecommerce website made on Django and is divided into the following 5 
 - Adding Site Functionality
 - Implementing Guest Checkout
 - Payment Integration
+
+It is based on the following

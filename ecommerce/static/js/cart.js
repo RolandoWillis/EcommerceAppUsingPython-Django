@@ -13,13 +13,21 @@ for(var i = 0; i < updateButtons.length; i++){
         console.log('USER:', user)
 
         if(user === 'AnonymousUser'){
-            window.alert('User is Not Authenticated. Please Login to Proceed!')}
+            // window.alert('User is Not Authenticated. Please Login to Proceed!')
+            addCookieItem()
+        }
+
         else{
             // console.log('User is Logged In. Sending Data ....')
             updateUserOrder(productId, action)
         }
     })
 }
+
+function addCookieItem(productId, action){
+    console.log("Not Logged In..")
+}
+
 
 function updateUserOrder(productId, action){
     console.log('User is Authenticated. Sending Data ...')

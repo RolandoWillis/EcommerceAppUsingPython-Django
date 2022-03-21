@@ -184,6 +184,12 @@
         .then((data) => {
             console.log('Success:', data);
             alert('Transaction Completed');
+
+            <!--Clearing cookies for new transaction-->
+
+            cart = {}
+            document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
             window.location.href = "{% url 'store' %}"
         })
 }

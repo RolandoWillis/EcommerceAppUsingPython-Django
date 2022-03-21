@@ -52,32 +52,38 @@ def cart(request):
 		order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
 		cartItems = order['get_cart_items']
 		for i in cart:
-			cartItems += cart[i]["quantity"]
-			
-			# Setting total and Items for non-logged in user
-			
-			product = Product.objects.get(id = i)
-			total = (product.price * cart[i]["quantity"])
-			
-			order['get_cart_total'] += total
-			order['get_cart_items'] += cart[i]["quantity"]
-			
-			# Setting Items in cart for non logged in user
-			
-			item = {'product': {
-						'id': product.id,
-					    'name': product.name,
-					    'price': product.price,
-					    'imageURL': product.imageURL
-					},
+			# We use try block to prevent items in cart that may have been removed from causing error
+			try:
+				cartItems += cart[i]["quantity"]
 				
+				# Setting total and Items for non-logged in user
+				
+				product = Product.objects.get(id = i)
+				total = (product.price * cart[i]["quantity"])
+				
+				order['get_cart_total'] += total
+				order['get_cart_items'] += cart[i]["quantity"]
+				
+				# Setting Items in cart for non logged in user
+				
+				item = {'product': {
+					'id': product.id,
+					'name': product.name,
+					'price': product.price,
+					'imageURL': product.imageURL,
+					},
+					
 					'quantity': cart[i]["quantity"],
 					'get_total': total,
 				}
-			items.append(item)
-			
+				items.append(item)
+				
+				if product.digital == False:
+					order['shipping'] = True
+				
+			except:
+				pass
 		
-	
 	context = {'items': items, 'order': order, 'cartItems': cartItems}
 	return render(request, 'store/cart.html', context)
 

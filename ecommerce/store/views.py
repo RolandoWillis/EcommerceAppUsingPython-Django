@@ -75,34 +75,20 @@ def updateItem(request):
 
 # This was 1 way for data with no security issues
 # The secure way is that we add a csrf token in form in checkout.html
+
+
 def processOrder(request):
 	# print('Data:', request.body)
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
+	
 	# for authenticated user
 	if request.user.is_authenticated:
 		customer = request.user.customer
 		order, created = Order.objects.get_or_create(customer = customer, complete = False)
-		total = float(data['form']['total'])
-		order.transaction_id = transaction_id
-		
-		# Checking if total = Cart Total
-		
-		if total == float(order.get_cart_total):
-			order.complete = True
-		order.save()
-		
-		if order.shipping == True:
-			ShippingAddress.objects.create(
-				customer = customer,
-				order = order,
-				address = data['shipping']['address'],
-				city = data['shipping']['city'],
-				state = data['shipping']['state'],
-				zipcode = data['shipping']['zipcode'],
-			)
+	
+	# For Non-authenticated user
 	else:
-		# For Non-authenticated user
 		print("User is not Logged In")
 		print("Cookies:", request.COOKIES)
 		
@@ -130,5 +116,28 @@ def processOrder(request):
 				order = order,
 				quantity = item['quantity']
 			)
+			
+	# Confirming total for both authenticated and anon user
+	
+	total = float(data['form']['total'])
+	order.transaction_id = transaction_id
+	
+	# Checking if total = Cart Total
+	
+	if total == float(order.get_cart_total):
+		order.complete = True
+	order.save()
+	
+	# Setting Shipping Form for both authenticated and anon user
+	
+	if order.shipping == True:
+		ShippingAddress.objects.create(
+			customer = customer,
+			order = order,
+			address = data['shipping']['address'],
+			city = data['shipping']['city'],
+			state = data['shipping']['state'],
+			zipcode = data['shipping']['zipcode'],
+		)
 	
 	return JsonResponse('Payment Successful', safe = False)

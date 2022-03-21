@@ -3,103 +3,38 @@ from .models import *
 from django.http import JsonResponse
 import json
 import datetime
+from .utils import cookieCart, cartData
 
 # Create your views here.
 
 def store(request):
 	# After Models, migration, admin and added values by admin
 	
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer = customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
-		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
-		cartItems = order.get_cart_items
-	
-	else:
-		# if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
-		items = []
-		order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-		cartItems = order['get_cart_items']
-	
-	# Previously
+	data = cartData(request)
+	cartItems = data['cartItems']
 	
 	products = Product.objects.all()
-	context = {
-		'products': products,
-		'cartItems': cartItems}  # creating context dictionary to pass objects to template, PS: dict updated, empty previously
-	return render(request, 'store/store.html',
-	              context)  # dirInTemplate/relevantHtmlFile | context to see that data in there
+	context = {'products': products, 'cartItems': cartItems}  # creating context dictionary to pass objects to template, PS: dict updated, empty previously
+	return render(request, 'store/store.html', context)  # dirInTemplate/relevantHtmlFile | context to see that data in there
 
 # After updating views, go to template store.html
 
 def cart(request):
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer = customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
-		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
-		cartItems = order.get_cart_items
+	data = cartData(request)
 	
-	else:
-		# if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
-		try:
-			cart = json.loads(request.COOKIES['cart'])
-			print('Cart:', cart)
-		except:
-			cart = {}
-		items = []
-		order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-		cartItems = order['get_cart_items']
-		for i in cart:
-			# We use try block to prevent items in cart that may have been removed from causing error
-			try:
-				cartItems += cart[i]["quantity"]
-				
-				# Setting total and Items for non-logged in user
-				
-				product = Product.objects.get(id = i)
-				total = (product.price * cart[i]["quantity"])
-				
-				order['get_cart_total'] += total
-				order['get_cart_items'] += cart[i]["quantity"]
-				
-				# Setting Items in cart for non logged in user
-				
-				item = {'product': {
-					'id': product.id,
-					'name': product.name,
-					'price': product.price,
-					'imageURL': product.imageURL,
-					},
-					
-					'quantity': cart[i]["quantity"],
-					'get_total': total,
-				}
-				items.append(item)
-				
-				if product.digital == False:
-					order['shipping'] = True
-				
-			except:
-				pass
-		
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
+	
 	context = {'items': items, 'order': order, 'cartItems': cartItems}
 	return render(request, 'store/cart.html', context)
 
 def checkout(request):
-	if request.user.is_authenticated:
-		customer = request.user.customer
-		order, created = Order.objects.get_or_create(customer = customer,
-		                                             complete = False)  # get_or_create() => Queries an obj with certain val, if it doesn't exist, it creates it
-		items = order.orderitem_set.all()  # Getting All the orderitems that have a certain order as parent | we can query child obj by setting the parent val & then the child obj with all lowercase values
-		cartItems = order.get_cart_items
+	data = cartData(request)
 	
-	else:
-		# if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
-		items = []
-		order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-		cartItems = order['get_cart_items']
+	cartItems = data['cartItems']
+	order = data['order']
+	items = data['items']
 	
 	context = {'items': items, 'order': order, 'cartItems': cartItems}
 	return render(request, 'store/checkout.html', context)
@@ -114,7 +49,7 @@ def updateItem(request):
 	product = Product.objects.get(id = productId)
 	
 	# get_or_create() is used because if an item already exists in cart,
-	# we dont wanna create it again, we just wanna update the quantity of it
+	# we don't wanna create it again, we just wanna update the quantity of it
 	
 	order, created = Order.objects.get_or_create(customer = customer, complete = False)
 	orderItem, created = OrderItem.objects.get_or_create(order = order, product = product)

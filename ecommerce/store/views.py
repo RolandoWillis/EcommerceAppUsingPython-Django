@@ -40,9 +40,16 @@ def cart(request):
 	
 	else:
 		# if user is not logged in, the page crashes as there is no values to be retrieved on template so we create a manual dict
+		try:
+			cart = json.loads(request.COOKIES['cart'])
+			print('Cart:', cart)
+		except:
+			cart = {}
 		items = []
 		order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
 		cartItems = order['get_cart_items']
+		for i in cart:
+			cartItems += cart[i]["quantity"]
 	
 	context = {'items': items, 'order': order, 'cartItems': cartItems}
 	return render(request, 'store/cart.html', context)

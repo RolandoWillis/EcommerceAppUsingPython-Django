@@ -63,12 +63,14 @@
                     return null;
                 }
 
+                <!--Turning the cart into a JS object-->
                 var cart = JSON.parse(getCookie('cart'))
                 console.log('Cart:', cart)
 
                 if (cart == undefined){
                     cart = {}
                     console.log('Cart Created!', cart)
+                    <!--The below line lets user leave the page and continue from where he left the next time he opens the page-->
                     document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
                 }
                 console.log('Cart:', cart)

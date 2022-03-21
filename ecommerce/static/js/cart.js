@@ -14,7 +14,7 @@ for(var i = 0; i < updateButtons.length; i++){
 
         if(user === 'AnonymousUser'){
             // window.alert('User is Not Authenticated. Please Login to Proceed!')
-            addCookieItem()
+            addCookieItem(productId, action)
         }
 
         else{
@@ -24,30 +24,59 @@ for(var i = 0; i < updateButtons.length; i++){
     })
 }
 
+// This is for cookies of cart
+
 function addCookieItem(productId, action){
     console.log("Not Logged In..")
-}
 
+    // Increasing quantity if up arrow is pressed
+
+    if(action == 'add'){
+        if (cart[productId] == undefined){
+            cart[productId] = {'quantity':1}
+        }
+
+        else{
+            cart[productId]['quantity'] + 1
+        }
+    }
+
+    // Decreasing quantity if down arrow is pressed
+
+    if(action == 'remove'){
+        cart[productId]['quantity'] -= 1
+
+        // delete key from cart if qty <= 0
+
+        if(cart[productId]['quantity'] <= 0){
+            console.log('Remove Item')
+            delete cart[productId]
+        }
+    }
+
+    document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+}
 
 function updateUserOrder(productId, action){
     console.log('User is Authenticated. Sending Data ...')
-//   window.alert('User is Authenticated. Sending Data ...')
-   var url = '/update_item/'
+    //   window.alert('User is Authenticated. Sending Data ...')
+    var url = '/update_item/'
 
-   fetch(url, {
+    fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'X-CSRFToken': csrftoken, // send data to backend
         },
         body:JSON.stringify({'productId': productId, 'action': action })
-   })
+    })
 
-   .then((response) => {
+    .then((response) => {
        return response.json()
-   })
-   .then((data) => {
+    })
+
+    .then((data) => {
        console.log('Data:', data)
        location.reload()
-   })
+    })
 }

@@ -78,10 +78,10 @@ def updateItem(request):
 def processOrder(request):
 	# print('Data:', request.body)
 	transaction_id = datetime.datetime.now().timestamp()
+	data = json.loads(request.body)
 	# for authenticated user
 	if request.user.is_authenticated:
 		customer = request.user.customer
-		data = json.loads(request.body)
 		order, created = Order.objects.get_or_create(customer = customer, complete = False)
 		total = float(data['form']['total'])
 		order.transaction_id = transaction_id
@@ -102,6 +102,33 @@ def processOrder(request):
 				zipcode = data['shipping']['zipcode'],
 			)
 	else:
+		# For Non-authenticated user
 		print("User is not Logged In")
+		print("Cookies:", request.COOKIES)
+		
+		name = data['form']['name']
+		email = data['form']['email']
+		
+		cookieData = cookieCart(request)
+		items = cookieData['items']
+		customer,created = Customer.objects.get_or_create(
+			email = email,
+		)
+		
+		customer.name = name
+		customer.save()
+		
+		order = Order.objects.create(
+			customer = customer,
+			complete = False,
+		)
+		
+		for item in items:
+			product = Product.objects.get(id=item['product']['id'])
+			orderItem = OrderItem.objects.create(
+				product = product,
+				order = order,
+				quantity = item['quantity']
+			)
 	
 	return JsonResponse('Payment Successful', safe = False)

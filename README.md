@@ -5,7 +5,7 @@ This is an Ecommerce website made on Django and is divided into the following 5 
 - Adding data structures.
 - Adding Site Functionality
 - Implementing Guest Checkout
-- Payment Integration
+- Payment Integration (Paypal Integration)
 
 It is based on the following Database models:
 
